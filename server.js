@@ -15,7 +15,16 @@ const blogRoutes = require("./routes/blogs");
 // Init app & middleware
 const app = express();
 app.use(express.json());
-app.use(cors());
+// Use the CORS middleware
+app.use(
+	cors({
+		origin: [
+			"http://localhost:5173",
+			"http://localhost:4173",
+			"https://app.frekk.fun/",
+		],
+	})
+);
 
 // Log requests
 app.use((req, res, next) => {
