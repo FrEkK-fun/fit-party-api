@@ -58,8 +58,10 @@ docker save -o frekk-fit-party-api.tar frekk-fit-party-api
 
 ### Load the image from the tar file
 
+(On the server)
+
 ```bash
-docker load -i frekk-fit-party-api.tar
+docker load -i /path/to/frekk-fit-party-api.tar
 ```
 
 Remember to set the environment variables from the `.env` file and expose the port `4000` when running the container.
