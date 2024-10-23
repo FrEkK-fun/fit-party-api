@@ -13,6 +13,8 @@ const createSession = async (req, res) => {
 			return res.status(404).json({ error: "Could not find player" });
 		}
 
+		const sessionTimestamp = new Date(timestamp);
+
 		// Create a new session object with MongoDB-generated _id and timestamp
 		const newSession = {
 			_id: new mongoose.Types.ObjectId(),
@@ -20,7 +22,7 @@ const createSession = async (req, res) => {
 			title: title,
 			isSynced: false,
 			syncTimestamp: null,
-			timestamp: timestamp,
+			timestamp: sessionTimestamp,
 		};
 
 		// Add the session to the player's sessions array
@@ -90,9 +92,12 @@ const updateSession = async (req, res) => {
 			"sessions._id": sessionId,
 		};
 
+		const sessionTimestamp = new Date(timestamp);
+
 		const update = {
 			$set: {
 				"sessions.$.intensity": intensity,
+				"sessions.$.timestamp": sessionTimestamp,
 			},
 		};
 		const result = await Player.updateOne(filter, update);
