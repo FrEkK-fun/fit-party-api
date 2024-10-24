@@ -42,26 +42,12 @@ To run the app in production mode, run the following commands:
 npm start
 ```
 
-## Dockerizing
+## Docker
 
-To dockerize the app, run the following commands:
-
-```bash
-docker build -t frekk-fit-party-api .
-```
-
-### Save the image to a tar file
+The API can be run in a Docker container. The container is automatically built on changes to main, and the :latest image can be found by running:
 
 ```bash
-docker save -o frekk-fit-party-api.tar frekk-fit-party-api
-```
-
-### Load the image from the tar file
-
-(On the server)
-
-```bash
-docker load -i /path/to/frekk-fit-party-api.tar
+docker pull ghcr.io/frekk-fun/fit-party-api:latest
 ```
 
 Remember to set the environment variables from the `.env` file and expose the port `4000` when running the container.
