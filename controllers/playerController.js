@@ -92,6 +92,30 @@ const updatePlayerGoal = async (req, res) => {
 	res.status(200).json(player);
 };
 
+// PATCH Update player's class
+const updatePlayerClass = async (req, res) => {
+	const { id } = req.params;
+	const { classStr } = req.body;
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: "Invalid ID" });
+	}
+
+	const player = await Player.findOneAndUpdate(
+		{ _id: id },
+		{
+			"properties.class": classStr,
+		},
+		{ new: true } // return the updated player
+	);
+
+	if (!player) {
+		return res.status(404).json({ error: "Could not find player" });
+	}
+
+	res.status(200).json(player);
+};
+
 // DELETE player by ID
 const deletePlayer = async (req, res) => {
 	const { id } = req.params;
@@ -114,5 +138,6 @@ module.exports = {
 	createPlayer,
 	updatePlayer,
 	updatePlayerGoal,
+	updatePlayerClass,
 	deletePlayer,
 };

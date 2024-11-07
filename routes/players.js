@@ -5,6 +5,7 @@ const {
 	getPlayer,
 	updatePlayer,
 	updatePlayerGoal,
+	updatePlayerClass,
 	deletePlayer,
 } = require("../controllers/playerController");
 
@@ -24,6 +25,9 @@ router.patch("/:id", updatePlayer);
 
 // PATCH Update player goal by ID
 router.patch("/:id/goal", updatePlayerGoal);
+
+// PATCH Update player class by ID
+router.patch("/:id/class", updatePlayerClass);
 
 // DELETE player by ID
 router.delete("/:id", deletePlayer);
