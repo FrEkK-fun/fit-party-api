@@ -11,17 +11,67 @@ const calcXpForSession = (intensity) => {
 	return xp;
 };
 
-const calcTotalXpForDay = (sessions) => {
-	const currentDate = new Date();
-	currentDate.setHours(0, 0, 0, 0);
+// Group sessions by day
+const groupSessionsByDay = (sessions) => {
+	// Filter sessions that have not been synced
+	const unsyncedSessions = sessions.filter((session) => !session.isSynced);
 
-	const totalXp = sessions.reduce((total, session) => {
+	// Group sessions by day
+	const groupedSessions = unsyncedSessions.reduce((acc, session) => {
 		const sessionDate = new Date(session.timestamp);
-		sessionDate.setHours(0, 0, 0, 0);
+		const day = sessionDate.toDateString();
 
-		if (sessionDate.getTime() === currentDate.getTime()) {
-			total += calcXpForSession(session.intensity);
+		if (!acc[day]) {
+			acc[day] = [];
 		}
+
+		acc[day].push(session);
+
+		return acc;
+	}, {});
+
+	return groupedSessions;
+};
+
+// Calculate total XP for each day
+const calcTotalXpForDay = (sessions) => {
+	const groupedSessions = groupSessionsByDay(sessions);
+
+	const totalXp = Object.keys(groupedSessions).reduce((acc, day) => {
+		const dailyXp = groupedSessions[day].reduce((total, session) => {
+			total += calcXpForSession(session.intensity);
+
+			return total;
+		}, 0);
+
+		acc[day] = dailyXp;
+
+		return acc;
+	}, {});
+
+	return totalXp;
+};
+
+const adjustMaxXpPerDay = (sessions) => {
+	const totalXp = calcTotalXpForDay(sessions);
+	const adjustedXp = { ...totalXp };
+	const maxDailyXp = 3;
+
+	// Check each day's total XP and adjust if necessary
+	Object.keys(adjustedXp).forEach((day) => {
+		if (adjustedXp[day] > maxDailyXp) {
+			adjustedXp[day] = maxDailyXp;
+		}
+	});
+
+	return adjustedXp;
+};
+
+const calcXpViewValue = (sessions) => {
+	const weeklyXp = adjustMaxXpPerDay(sessions);
+
+	const totalXp = Object.values(weeklyXp).reduce((total, dailyXp) => {
+		total += dailyXp;
 
 		return total;
 	}, 0);
@@ -29,15 +79,4 @@ const calcTotalXpForDay = (sessions) => {
 	return totalXp;
 };
 
-const adjustMaxXpPerDay = (sessions) => {
-	const totalXp = calcTotalXpForDay(sessions);
-	const max = 3;
-
-	if (totalXp >= max) {
-		return max;
-	}
-
-	return totalXp;
-};
-
-module.exports = { adjustMaxXpPerDay };
+module.exports = { calcXpViewValue };

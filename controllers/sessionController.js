@@ -1,7 +1,7 @@
 const { notifyDiscord } = require("../discordBot");
 const Player = require("../models/playerModel");
 const mongoose = require("mongoose");
-const { adjustMaxXpPerDay } = require("../utils/xpCalculator");
+const { calcXpViewValue } = require("../utils/xpCalculator");
 
 // POST Create session
 const createSession = async (req, res) => {
@@ -29,11 +29,8 @@ const createSession = async (req, res) => {
 		// Add the session to the player's sessions array
 		player.sessions.push(newSession);
 
-		// Calculate XP
-		const dailyXp = adjustMaxXpPerDay(player.sessions);
-
 		// Update the player's weekly XP
-		player.weekly.xp += dailyXp;
+		player.weekly.xp = calcXpViewValue(player.sessions);
 
 		// Save the updated player document
 		await player.save();
