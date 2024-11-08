@@ -36,7 +36,7 @@ const createSession = async (req, res) => {
 		await player.save();
 
 		// Notify Discord about the new session
-		// notifyDiscord(player.name, player.team.teamName, intensity, title);
+		notifyDiscord(player.name, player.team.teamName, intensity, title);
 
 		// Send the newly created session data in the response
 		res.status(201).json(newSession);
