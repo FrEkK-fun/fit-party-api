@@ -19,8 +19,12 @@ const playerSchema = new mongoose.Schema(
 			required: true,
 		},
 		weekly: {
-			type: Object,
-			required: true,
+			xp: { type: Number, default: 0 },
+			level: { type: Number, default: 1 },
+			goal: {
+				description: { type: String },
+				done: { type: Boolean, default: false },
+			},
 		},
 		sessions: {
 			type: Array,
