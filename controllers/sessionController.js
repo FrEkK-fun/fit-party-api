@@ -2,6 +2,7 @@ const { notifyDiscord } = require("../discordBot");
 const Player = require("../models/playerModel");
 const mongoose = require("mongoose");
 const { calcXpViewValue } = require("../utils/xpCalculator");
+const { calcLevel } = require("../utils/levelCalculator");
 
 // POST Create session
 const createSession = async (req, res) => {
@@ -32,6 +33,9 @@ const createSession = async (req, res) => {
 		// Update the player's weekly XP
 		player.weekly.xp = calcXpViewValue(player.sessions);
 
+		// Update the player's level
+		player.weekly.level = calcLevel(player.weekly.xp, player.weekly.goal);
+
 		// Save the updated player document
 		await player.save();
 
@@ -39,7 +43,11 @@ const createSession = async (req, res) => {
 		notifyDiscord(player.name, player.team.teamName, intensity, title);
 
 		// Send the newly created session data in the response
-		res.status(201).json(newSession);
+		res.status(201).json({
+			session: newSession,
+			weeklyXp: player.weekly.xp,
+			weeklyLevel: player.weekly.level,
+		});
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error: "Internal server error" });
