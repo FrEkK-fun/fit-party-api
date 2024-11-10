@@ -13,8 +13,14 @@ const client = new Client({
 
 // Log in to Discord
 client.login(DISCORD_TOKEN);
+
 // Notify Discord when a workout session is logged
-function notifyDiscord(playerName, teamName, workoutIntensity, workoutDetails) {
+function fitBotNewSession(
+	playerName,
+	teamName,
+	workoutIntensity,
+	workoutDetails
+) {
 	const channel = client.channels.cache.get(DISCORD_CHANNEL_ID);
 
 	if (channel) {
@@ -26,4 +32,27 @@ function notifyDiscord(playerName, teamName, workoutIntensity, workoutDetails) {
 	}
 }
 
-module.exports = { notifyDiscord };
+// Notify Discord when a goal is updated
+function fitBotGoalUpdate(playerObj, goalObj) {
+	let msg;
+	if (goalObj.done) {
+		msg = `🎉 **${
+			playerObj.name
+		}** from team **${playerObj.team.teamName.toLowerCase()}** just completed their weekly goal!`;
+	}
+
+	if (!goalObj.done) {
+		msg = `🏁 **${
+			playerObj.name
+		}** from team **${playerObj.team.teamName.toLowerCase()}** just updated their weekly goal!
+		> **New goal**: ${goalObj.description}`;
+	}
+
+	const channel = client.channels.cache.get(DISCORD_CHANNEL_ID);
+
+	if (channel) {
+		channel.send(msg);
+	}
+}
+
+module.exports = { fitBotNewSession, fitBotGoalUpdate };
