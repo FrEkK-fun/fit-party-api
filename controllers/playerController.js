@@ -1,5 +1,6 @@
-const Player = require("../models/playerModel");
 const mongoose = require("mongoose");
+const Player = require("../models/playerModel");
+const { fitBotGoalUpdate } = require("../discordBot");
 
 // GET all players
 const getPlayers = async (req, res) => {
@@ -84,6 +85,9 @@ const updatePlayerGoal = async (req, res) => {
 		},
 		{ new: true } // return the updated player
 	);
+
+	// Notify Discord about the goal update
+	fitBotGoalUpdate(player, goalObj);
 
 	if (!player) {
 		return res.status(404).json({ error: "Could not find player" });

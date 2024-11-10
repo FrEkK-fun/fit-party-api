@@ -1,6 +1,6 @@
-const { notifyDiscord } = require("../discordBot");
-const Player = require("../models/playerModel");
 const mongoose = require("mongoose");
+const { fitBotNewSession } = require("../discordBot");
+const Player = require("../models/playerModel");
 const { calcXpViewValue } = require("../utils/xpCalculator");
 const { calcLevel } = require("../utils/levelCalculator");
 
@@ -40,7 +40,7 @@ const createSession = async (req, res) => {
 		await player.save();
 
 		// Notify Discord about the new session
-		notifyDiscord(player.name, player.team.teamName, intensity, title);
+		fitBotNewSession(player.name, player.team.teamName, intensity, title);
 
 		// Send the newly created session data in the response
 		res.status(201).json({
