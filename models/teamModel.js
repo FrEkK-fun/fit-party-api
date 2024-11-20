@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const teamSchema = new mongoose.Schema(
 	{
@@ -31,7 +32,7 @@ const teamSchema = new mongoose.Schema(
 			},
 			weapons: {
 				weaponIdMongo: {
-					type: ObjectId,
+					type: Schema.Types.ObjectId,
 				},
 				weaponIdUnity: {
 					type: String,
@@ -40,7 +41,7 @@ const teamSchema = new mongoose.Schema(
 					type: String,
 				},
 				ownerIdMongo: {
-					type: ObjectId,
+					type: Schema.Types.ObjectId,
 				},
 				ownerIdUnity: {
 					type: String,
@@ -48,7 +49,7 @@ const teamSchema = new mongoose.Schema(
 			},
 			armor: {
 				armorIdMongo: {
-					type: ObjectId,
+					type: Schema.Types.ObjectId,
 				},
 				armorIdUnity: {
 					type: String,
@@ -57,7 +58,7 @@ const teamSchema = new mongoose.Schema(
 					type: String,
 				},
 				ownerIdMongo: {
-					type: ObjectId,
+					type: Schema.Types.ObjectId,
 				},
 				ownerIdUnity: {
 					type: String,
@@ -65,7 +66,7 @@ const teamSchema = new mongoose.Schema(
 			},
 			cards: {
 				cardIdMongo: {
-					type: ObjectId,
+					type: Schema.Types.ObjectId,
 				},
 				cardIdUnity: {
 					type: String,
