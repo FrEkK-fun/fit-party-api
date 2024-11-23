@@ -33,7 +33,7 @@ const createSession = async (req, res) => {
 		// Update the player's weekly XP
 		player.weekly.xp = calcXpViewValue(player.sessions);
 
-		// Update the player's level
+		// Update the player's weekly level
 		player.weekly.level = calcLevel(player.weekly.xp, player.weekly.goal);
 
 		// Save the updated player document
