@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // GET all teams
 const getTeams = async (req, res) => {
-	const teams = await Team.find({}).sort({ name: 1 });
+	const teams = await Team.find({}).sort({ name: 1 }).populate("players");
 	res.status(200).json(teams);
 };
 

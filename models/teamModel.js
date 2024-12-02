@@ -76,10 +76,12 @@ const teamSchema = new mongoose.Schema(
 				},
 			},
 		},
-		players: {
-			type: Array,
-			default: [],
-		},
+		players: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Player",
+			},
+		],
 	},
 	{ timestamps: true }
 );
