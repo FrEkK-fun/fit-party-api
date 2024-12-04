@@ -15,7 +15,7 @@ const getTeam = async (req, res) => {
 		return res.status(404).json({ error: "Invalid ID" });
 	}
 
-	const team = await Team.findById(id);
+	const team = await Team.findById(id).populate("players");
 	if (!team) {
 		return res.status(404).json({ error: "Could not find team" });
 	}
