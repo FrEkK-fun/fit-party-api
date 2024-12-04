@@ -30,51 +30,24 @@ const teamSchema = new mongoose.Schema(
 			wood: {
 				type: { type: Number, default: 0 },
 			},
-			weapons: {
-				weaponIdMongo: {
-					type: Schema.Types.ObjectId,
+			weapons: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Weapon",
 				},
-				weaponIdUnity: {
-					type: String,
+			],
+			armor: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Armor",
 				},
-				weaponName: {
-					type: String,
+			],
+			cards: [
+				{
+					type: mongoose.Schema.Types.ObjectId,
+					ref: "Card",
 				},
-				ownerIdMongo: {
-					type: Schema.Types.ObjectId,
-				},
-				ownerIdUnity: {
-					type: String,
-				},
-			},
-			armor: {
-				armorIdMongo: {
-					type: Schema.Types.ObjectId,
-				},
-				armorIdUnity: {
-					type: String,
-				},
-				armorName: {
-					type: String,
-				},
-				ownerIdMongo: {
-					type: Schema.Types.ObjectId,
-				},
-				ownerIdUnity: {
-					type: String,
-				},
-			},
-			cards: {
-				cardIdMongo: {
-					type: Schema.Types.ObjectId,
-				},
-				cardIdUnity: {
-					type: String,
-				},
-				cardName: {
-					type: String,
-				},
-			},
+			],
 		},
 		players: [
 			{

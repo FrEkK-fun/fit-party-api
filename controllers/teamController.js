@@ -1,9 +1,16 @@
 const Team = require("../models/teamModel");
+const Player = require("../models/playerModel");
+const Card = require("../models/cardModel");
+const Armor = require("../models/armorModel");
+const Weapon = require("../models/weaponModel");
 const mongoose = require("mongoose");
 
 // GET all teams
 const getTeams = async (req, res) => {
-	const teams = await Team.find({}).sort({ name: 1 }).populate("players");
+	const teams = await Team.find({}).sort({ name: 1 }).populate({
+		path: "players",
+		model: "Player",
+	});
 	res.status(200).json(teams);
 };
 
@@ -15,10 +22,27 @@ const getTeam = async (req, res) => {
 		return res.status(404).json({ error: "Invalid ID" });
 	}
 
-	const team = await Team.findById(id).populate("players");
+	const team = await Team.findById(id)
+		.populate({
+			path: "players",
+			model: "Player",
+		})
+		.populate({
+			path: "inventory.weapons",
+			model: "Weapon",
+		})
+		.populate({
+			path: "inventory.cards",
+			model: "Card",
+		})
+		.populate({
+			path: "inventory.armor",
+			model: "Armor",
+		});
 	if (!team) {
 		return res.status(404).json({ error: "Could not find team" });
 	}
+
 	res.status(200).json(team);
 };
 
