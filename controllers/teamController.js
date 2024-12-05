@@ -28,16 +28,24 @@ const getTeam = async (req, res) => {
 			model: "Player",
 		})
 		.populate({
-			path: "inventory.weapons",
+			path: "inventory.weapons.weaponIdMongo",
 			model: "Weapon",
+		})
+		.populate({
+			path: "inventory.weapons.ownerIdMongo",
+			model: "Player",
 		})
 		.populate({
 			path: "inventory.cards",
 			model: "Card",
 		})
 		.populate({
-			path: "inventory.armor",
+			path: "inventory.armors.armorIdMongo",
 			model: "Armor",
+		})
+		.populate({
+			path: "inventory.armors.ownerIdMongo",
+			model: "Player",
 		});
 	if (!team) {
 		return res.status(404).json({ error: "Could not find team" });

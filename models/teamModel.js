@@ -32,14 +32,26 @@ const teamSchema = new mongoose.Schema(
 			},
 			weapons: [
 				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "Weapon",
+					weaponIdMongo: {
+						type: mongoose.Schema.Types.ObjectId,
+						ref: "Weapon",
+					},
+					ownerIdMongo: {
+						type: mongoose.Schema.Types.ObjectId,
+						ref: "Player",
+					},
 				},
 			],
-			armor: [
+			armors: [
 				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: "Armor",
+					armorIdMongo: {
+						type: mongoose.Schema.Types.ObjectId,
+						ref: "Armor",
+					},
+					ownerIdMongo: {
+						type: mongoose.Schema.Types.ObjectId,
+						ref: "Player",
+					},
 				},
 			],
 			cards: [
