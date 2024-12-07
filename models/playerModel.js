@@ -11,8 +11,14 @@ const playerSchema = new mongoose.Schema(
 			required: false,
 		},
 		team: {
-			type: Object,
-			required: true,
+			isTeamLeader: {
+				type: Boolean,
+				default: false,
+			},
+			teamIdMongo: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Team",
+			},
 		},
 		properties: {
 			type: Object,

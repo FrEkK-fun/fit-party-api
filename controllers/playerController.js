@@ -16,7 +16,10 @@ const getPlayer = async (req, res) => {
 		return res.status(404).json({ error: "Invalid ID" });
 	}
 
-	const player = await Player.findById(id);
+	const player = await Player.findById(id).populate({
+		path: "team.teamIdMongo",
+		model: "Team",
+	});
 	if (!player) {
 		return res.status(404).json({ error: "Could not find player" });
 	}
