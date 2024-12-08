@@ -11,6 +11,12 @@ const armorsSchema = new mongoose.Schema({
 	title: {
 		type: String,
 	},
+	cost: {
+		type: Number,
+	},
+	baseDefense: {
+		type: Number,
+	},
 });
 
 module.exports = mongoose.model("Armor", armorsSchema);
