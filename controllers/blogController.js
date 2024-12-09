@@ -7,6 +7,22 @@ const getBlogs = async (req, res) => {
 	res.status(200).json(blogs);
 };
 
+// GET blog by ID
+const getBlog = async (req, res) => {
+	const { id } = req.params;
+
+	if (!mongoose.Types.ObjectId.isValid(id)) {
+		return res.status(404).json({ error: "Invalid ID" });
+	}
+
+	const blog = await Blog.findById(id);
+	if (!blog) {
+		return res.status(404).json({ error: "Could not find blog" });
+	}
+
+	res.status(200).json(blog);
+};
+
 // POST Create blog
 const createBlog = async (req, res) => {
 	// add to db
@@ -60,6 +76,7 @@ const deleteBlog = async (req, res) => {
 
 module.exports = {
 	getBlogs,
+	getBlog,
 	createBlog,
 	updateBlog,
 	deleteBlog,
