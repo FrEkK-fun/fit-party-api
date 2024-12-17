@@ -1,8 +1,11 @@
 const mongoose = require("mongoose");
 const { fitBotNewSession } = require("../discordBot");
 const Player = require("../models/playerModel");
-const { calcXpViewValue } = require("../utils/xpCalculator");
-const { calcLevel } = require("../utils/levelCalculator");
+const {
+	bulkSessionsPerWeek,
+	calcXpViewValue,
+	calcLevel,
+} = require("../utils/sessionsXpLevelUtils");
 
 // POST Create session
 const createSession = async (req, res) => {
@@ -30,11 +33,15 @@ const createSession = async (req, res) => {
 		// Add the session to the player's sessions array
 		player.sessions.push(newSession);
 
+		// Group sessions by week
+		const sessionsPerWeek = bulkSessionsPerWeek(player.sessions);
+		const latestWeekSessions = sessionsPerWeek[sessionsPerWeek.length - 1];
+
 		// Update the player's weekly XP
-		player.weekly.xp = calcXpViewValue(player.sessions);
+		player.weekly.xp = calcXpViewValue(latestWeekSessions);
 
 		// Update the player's weekly level
-		player.weekly.level = calcLevel(player.weekly.xp, player.weekly.goal);
+		player.weekly.level = calcLevel(player.weekly.xp);
 
 		// Save the updated player document
 		await player.save();
@@ -157,6 +164,16 @@ const deleteSession = async (req, res) => {
 
 		// Remove the session from the array
 		player.sessions.splice(sessionIndex, 1);
+
+		// Group sessions by week
+		const sessionsPerWeek = bulkSessionsPerWeek(player.sessions);
+		const latestWeekSessions = sessionsPerWeek[sessionsPerWeek.length - 1];
+
+		// Update the player's weekly XP
+		player.weekly.xp = calcXpViewValue(latestWeekSessions);
+
+		// Update the player's weekly level
+		player.weekly.level = calcLevel(player.weekly.xp);
 
 		// Save the updated player
 		await player.save();
