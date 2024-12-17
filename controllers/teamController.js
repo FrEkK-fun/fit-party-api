@@ -94,12 +94,9 @@ const updateTeam = async (req, res) => {
 		return res.status(404).json({ error: "Invalid ID" });
 	}
 
-	const team = await Team.findOneAndUpdate(
-		{ _id: id },
-		{
-			...req.body,
-		}
-	);
+	const team = await Team.findOneAndUpdate({ _id: id }, req.body, {
+		new: true,
+	});
 
 	if (!team) {
 		return res.status(404).json({ error: "Could not find team" });
